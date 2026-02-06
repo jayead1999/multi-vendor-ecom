@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 
 //add prefix 'admin' to all admin auth routes
-Route::prefix('admin')->middleware('guest')->group(function () {
+Route::prefix('admin')->middleware('guest:admin')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('admin.register');
 
@@ -37,7 +37,7 @@ Route::prefix('admin')->middleware('guest')->group(function () {
         ->name('admin.password.store');
 });
 
-Route::middleware('auth')->group(function () {
+Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('admin.verification.notice');
 
@@ -57,5 +57,11 @@ Route::middleware('auth')->group(function () {
     Route::put('password', [PasswordController::class, 'update'])->name('admin.password.update');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
+        ->name('admin.logout');
 });
+
+
+
+Route::get('/admin/dashboard', function () {
+    return view('admin/dashboard/dashboard');
+})->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
