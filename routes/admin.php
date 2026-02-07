@@ -11,13 +11,13 @@ use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-
 //add prefix 'admin' to all admin auth routes
 Route::prefix('admin')->middleware('guest:admin')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('admin.register');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisteredUserController::class, 'store'])
+        ->name('admin.register.store');
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('admin.login');
@@ -59,8 +59,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('admin.logout');
 });
-
-
 
 Route::get('/admin/dashboard', function () {
     return view('admin/dashboard/dashboard');
