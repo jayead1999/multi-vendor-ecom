@@ -2,31 +2,10 @@
 
 <html lang="en">
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Admin Register</title>
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="{{ asset('assets/admin/css/tabler.css') }}" rel="stylesheet" />
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PLUGINS STYLES -->
-    {{-- <link href="{{ asset('assets/admin/dist/css/tabler-flags.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/admin/dist/css/tabler-socials.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/admin/dist/css/tabler-payments.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/admin/dist/css/tabler-vendors.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/admin/dist/css/tabler-marketing.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/admin/dist/css/tabler-themes.css') }}" rel="stylesheet" /> --}}
-    <!-- END PLUGINS STYLES -->
-    <!-- BEGIN DEMO STYLES -->
-    <link href="./preview/css/demo.css?1750026890" rel="stylesheet" />
-    <!-- END DEMO STYLES -->
-    <!-- BEGIN CUSTOM FONT -->
-    <style>
-        @import url("https://rsms.me/inter/inter.css");
-    </style>
-    <!-- END CUSTOM FONT -->
-</head>
+@push('title')
+    Admin - Login
+@endpush
+<x-head />
 
 <body>
     <!-- BEGIN GLOBAL THEME SCRIPT -->

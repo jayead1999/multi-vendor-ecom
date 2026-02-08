@@ -2,31 +2,10 @@
 
 <html lang="en">
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Admin - Login</title>
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href={{ asset('assets/admin/css/tabler.css') }} rel="stylesheet" />
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PLUGINS STYLES -->
-    {{-- <link href="./dist/css/tabler-flags.css?1750026890" rel="stylesheet" />
-    <link href="./dist/css/tabler-socials.css?1750026890" rel="stylesheet" />
-    <link href="./dist/css/tabler-payments.css?1750026890" rel="stylesheet" />
-    <link href="./dist/css/tabler-vendors.css?1750026890" rel="stylesheet" />
-    <link href="./dist/css/tabler-marketing.css?1750026890" rel="stylesheet" />
-    <link href="./dist/css/tabler-themes.css?1750026890" rel="stylesheet" />
-    <!-- END PLUGINS STYLES -->
-    <!-- BEGIN DEMO STYLES -->
-    <link href="./preview/css/demo.css?1750026890" rel="stylesheet" />
-    <!-- END DEMO STYLES -->
-    <!-- BEGIN CUSTOM FONT --> --}}
-    <style>
-        @import url("https://rsms.me/inter/inter.css");
-    </style>
-    <!-- END CUSTOM FONT -->
-</head>
+@push('title')
+    Admin - Login
+@endpush
+<x-head />
 
 <body>
     <!-- BEGIN GLOBAL THEME SCRIPT -->
@@ -35,8 +14,7 @@
     <div class="page page-center">
         <div class="container container-tight py-4">
             <div class="text-center mb-4">
-                <!-- BEGIN NAVBAR LOGO --><a href="." aria-label="Tabler"
-                    class="navbar-brand navbar-brand-autodark">
+                <!-- BEGIN NAVBAR LOGO --><a href="." aria-label="Tabler" class="navbar-brand navbar-brand-autodark">
                     <svg xmlns="http://www.w3.org/2000/svg" width="110" height="32" viewBox="0 0 232 68"
                         class="navbar-brand-image">
                         <path

@@ -1,39 +1,390 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('admin.password.store') }}">
-        @csrf
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+<!doctype html>
+
+<html lang="en">
+
+@push('title')
+    Admin - Reset Password
+@endpush
+<x-head />
+
+<body>
+    <!-- BEGIN GLOBAL THEME SCRIPT -->
+    <script src="./dist/js/tabler-theme.min.js?1750026890"></script>
+    <!-- END GLOBAL THEME SCRIPT -->
+    <div class="page page-center">
+        <div class="container container-tight py-4">
+            <div class="text-center mb-4">
+                <!-- BEGIN NAVBAR LOGO --><a href="." aria-label="Tabler" class="navbar-brand navbar-brand-autodark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="110" height="32" viewBox="0 0 232 68"
+                        class="navbar-brand-image">
+                        <path
+                            d="M64.6 16.2C63 9.9 58.1 5 51.8 3.4 40 1.5 28 1.5 16.2 3.4 9.9 5 5 9.9 3.4 16.2 1.5 28 1.5 40 3.4 51.8 5 58.1 9.9 63 16.2 64.6c11.8 1.9 23.8 1.9 35.6 0C58.1 63 63 58.1 64.6 51.8c1.9-11.8 1.9-23.8 0-35.6zM33.3 36.3c-2.8 4.4-6.6 8.2-11.1 11-1.5.9-3.3.9-4.8.1s-2.4-2.3-2.5-4c0-1.7.9-3.3 2.4-4.1 2.3-1.4 4.4-3.2 6.1-5.3-1.8-2.1-3.8-3.8-6.1-5.3-2.3-1.3-3-4.2-1.7-6.4s4.3-2.9 6.5-1.6c4.5 2.8 8.2 6.5 11.1 10.9 1 1.4 1 3.3.1 4.7zM49.2 46H37.8c-2.1 0-3.8-1-3.8-3s1.7-3 3.8-3h11.4c2.1 0 3.8 1 3.8 3s-1.7 3-3.8 3z"
+                            fill="#066fd1" style="fill: var(--tblr-primary, #066fd1)" />
+                        <path
+                            d="M105.8 46.1c.4 0 .9.2 1.2.6s.6 1 .6 1.7c0 .9-.5 1.6-1.4 2.2s-2 .9-3.2.9c-2 0-3.7-.4-5-1.3s-2-2.6-2-5.4V31.6h-2.2c-.8 0-1.4-.3-1.9-.8s-.9-1.1-.9-1.9c0-.7.3-1.4.8-1.8s1.2-.7 1.9-.7h2.2v-3.1c0-.8.3-1.5.8-2.1s1.3-.8 2.1-.8 1.5.3 2 .8.8 1.3.8 2.1v3.1h3.4c.8 0 1.4.3 1.9.8s.8 1.2.8 1.9-.3 1.4-.8 1.8-1.2.7-1.9.7h-3.4v13c0 .7.2 1.2.5 1.5s.8.5 1.4.5c.3 0 .6-.1 1.1-.2.5-.2.8-.3 1.2-.3zm28-20.7c.8 0 1.5.3 2.1.8.5.5.8 1.2.8 2.1v20.3c0 .8-.3 1.5-.8 2.1-.5.6-1.2.8-2.1.8s-1.5-.3-2-.8-.8-1.2-.8-2.1c-.8.9-1.9 1.7-3.2 2.4-1.3.7-2.8 1-4.3 1-2.2 0-4.2-.6-6-1.7-1.8-1.1-3.2-2.7-4.2-4.7s-1.6-4.3-1.6-6.9c0-2.6.5-4.9 1.5-6.9s2.4-3.6 4.2-4.8c1.8-1.1 3.7-1.7 5.9-1.7 1.5 0 3 .3 4.3.8 1.3.6 2.5 1.3 3.4 2.1 0-.8.3-1.5.8-2.1.5-.5 1.2-.7 2-.7zm-9.7 21.3c2.1 0 3.8-.8 5.1-2.3s2-3.4 2-5.7-.7-4.2-2-5.8c-1.3-1.5-3-2.3-5.1-2.3-2 0-3.7.8-5 2.3-1.3 1.5-2 3.5-2 5.8s.6 4.2 1.9 5.7 3 2.3 5.1 2.3zm32.1-21.3c2.2 0 4.2.6 6 1.7 1.8 1.1 3.2 2.7 4.2 4.7s1.6 4.3 1.6 6.9-.5 4.9-1.5 6.9-2.4 3.6-4.2 4.8c-1.8 1.1-3.7 1.7-5.9 1.7-1.5 0-3-.3-4.3-.9s-2.5-1.4-3.4-2.3v.3c0 .8-.3 1.5-.8 2.1-.5.6-1.2.8-2.1.8s-1.5-.3-2.1-.8c-.5-.5-.8-1.2-.8-2.1V18.9c0-.8.3-1.5.8-2.1.5-.6 1.2-.8 2.1-.8s1.5.3 2.1.8c.5.6.8 1.3.8 2.1v10c.8-1 1.8-1.8 3.2-2.5 1.3-.7 2.8-1 4.3-1zm-.7 21.3c2 0 3.7-.8 5-2.3s2-3.5 2-5.8-.6-4.2-1.9-5.7-3-2.3-5.1-2.3-3.8.8-5.1 2.3-2 3.4-2 5.7.7 4.2 2 5.8c1.3 1.6 3 2.3 5.1 2.3zm23.6 1.9c0 .8-.3 1.5-.8 2.1s-1.3.8-2.1.8-1.5-.3-2-.8-.8-1.3-.8-2.1V18.9c0-.8.3-1.5.8-2.1s1.3-.8 2.1-.8 1.5.3 2 .8.8 1.3.8 2.1v29.7zm29.3-10.5c0 .8-.3 1.4-.9 1.9-.6.5-1.2.7-2 .7h-15.8c.4 1.9 1.3 3.4 2.6 4.4 1.4 1.1 2.9 1.6 4.7 1.6 1.3 0 2.3-.1 3.1-.4.7-.2 1.3-.5 1.8-.8.4-.3.7-.5.9-.6.6-.3 1.1-.4 1.6-.4.7 0 1.2.2 1.7.7s.7 1 .7 1.7c0 .9-.4 1.6-1.3 2.4-.9.7-2.1 1.4-3.6 1.9s-3 .8-4.6.8c-2.7 0-5-.6-7-1.7s-3.5-2.7-4.6-4.6-1.6-4.2-1.6-6.6c0-2.8.6-5.2 1.7-7.2s2.7-3.7 4.6-4.8 3.9-1.7 6-1.7 4.1.6 6 1.7 3.4 2.7 4.5 4.7c.9 1.9 1.5 4.1 1.5 6.3zm-12.2-7.5c-3.7 0-5.9 1.7-6.6 5.2h12.6v-.3c-.1-1.3-.8-2.5-2-3.5s-2.5-1.4-4-1.4zm30.3-5.2c1 0 1.8.3 2.4.8.7.5 1 1.2 1 1.9 0 1-.3 1.7-.8 2.2-.5.5-1.1.8-1.8.7-.5 0-1-.1-1.6-.3-.2-.1-.4-.1-.6-.2-.4-.1-.7-.1-1.1-.1-.8 0-1.6.3-2.4.8s-1.4 1.3-1.9 2.3-.7 2.3-.7 3.7v11.4c0 .8-.3 1.5-.8 2.1-.5.6-1.2.8-2.1.8s-1.5-.3-2.1-.8c-.5-.6-.8-1.3-.8-2.1V28.8c0-.8.3-1.5.8-2.1.5-.6 1.2-.8 2.1-.8s1.5.3 2.1.8c.5.6.8 1.3.8 2.1v.6c.7-1.3 1.8-2.3 3.2-3 1.3-.7 2.8-1 4.3-1z"
+                            fill-rule="evenodd" clip-rule="evenodd" fill="#4a4a4a" />
+                    </svg>
+                </a><!-- END NAVBAR LOGO -->
+            </div>
+            <div class="card card-md">
+                <div class="card-body">
+                    <h2 class="h2 text-center mb-4">Reset Your Password</h2>
+
+
+                    <form action="{{ route('admin.password.store') }}" method="post" autocomplete="off" novalidate>
+                        @csrf
+
+
+                        <!-- Password Reset Token -->
+                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
+                        <div class="mb-3">
+                            <label class="form-label">Email address</label>
+                            <input name="email" type="email" value="{{ old('email',$request->email) }}" class="form-control"
+                                placeholder="your@email.com" autocomplete="off" />
+                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+
+                        </div>
+                        {{-- Password --}}
+                        <div class="mb-2">
+                            <label class="form-label">
+                                New Password
+
+                            </label>
+                            <div class="input-group input-group-flat">
+
+                                <input id="password" type="password" name="password" class="form-control"
+                                    placeholder="Enter Your New Password" autocomplete="new-password"
+                                    :value="__('Password')" />
+                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+
+                                <span class="input-group-text">
+                                    <a href="#" class="link-secondary" title="Show password"
+                                        data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler.io/icons/icon/eye -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                            <path
+                                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                        </svg></a>
+                                </span>
+                            </div>
+                        </div>
+
+                        {{-- Confirm Password --}}
+
+
+
+                        <div class="mb-2"> 
+                              <label class="form-label">
+                                New Password
+
+                            </label>
+                            <div class="input-group input-group-flat">
+                                <input type="password" name="password_confirmation" :value="__('Confirm Password')"
+                                    class="form-control" placeholder="Confirm Your New Password"
+                                    autocomplete="new-password" :value="__('Password')" />
+                                <x-input-error :messages="$errors->get('password_confirmation  ')" class="mt-2" />
+
+                                <span class="input-group-text">
+                                    <a href="#" class="link-secondary" title="Show password"
+                                        data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler.io/icons/icon/eye -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                            <path
+                                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                        </svg></a>
+                                </span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary w-100">Reset Password</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+           
         </div>
+    </div>
+    <div class="settings">
+        <a href="#" class="btn btn-floating btn-icon btn-primary" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings" aria-label="Theme Builder">
+            <!-- Download SVG icon from http://tabler.io/icons/icon/brush -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="icon icon-1">
+                <path d="M3 21v-4a4 4 0 1 1 4 4h-4" />
+                <path d="M21 3a16 16 0 0 0 -12.8 10.2" />
+                <path d="M21 3a16 16 0 0 1 -10.2 12.8" />
+                <path d="M10.6 9a9 9 0 0 1 4.4 4.4" />
+            </svg>
+        </a>
+        <form class="offcanvas offcanvas-start offcanvas-narrow" tabindex="-1" id="offcanvasSettings">
+            <div class="offcanvas-header">
+                <h2 class="offcanvas-title">Theme Builder</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body d-flex flex-column">
+                <div>
+                    <div class="mb-4">
+                        <label class="form-label">Color mode</label>
+                        <p class="form-hint">Choose the color mode for your app.</p>
+                        <label class="form-check">
+                            <div class="form-selectgroup-item">
+                                <input type="radio" name="theme" value="light" class="form-check-input"
+                                    checked />
+                                <div class="form-check-label">Light</div>
+                            </div>
+                        </label>
+                        <label class="form-check">
+                            <div class="form-selectgroup-item">
+                                <input type="radio" name="theme" value="dark" class="form-check-input" />
+                                <div class="form-check-label">Dark</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Color scheme</label>
+                        <p class="form-hint">The perfect color mode for your app.</p>
+                        <div class="row g-2">
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="blue"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-blue"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="azure"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-azure"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="indigo"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-indigo"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="purple"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-purple"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="pink"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-pink"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="red"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-red"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="orange"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-orange"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="yellow"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-yellow"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="lime"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-lime"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="green"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-green"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="teal"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-teal"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="theme-primary" type="radio" value="cyan"
+                                        class="form-colorinput-input" />
+                                    <span class="form-colorinput-color bg-cyan"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Font family</label>
+                        <p class="form-hint">Choose the font family that fits your app.</p>
+                        <div>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-font" value="sans-serif"
+                                        class="form-check-input" checked />
+                                    <div class="form-check-label">Sans-serif</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-font" value="serif"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">Serif</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-font" value="monospace"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">Monospace</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-font" value="comic"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">Comic</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Theme base</label>
+                        <p class="form-hint">Choose the gray shade for your app.</p>
+                        <div>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-base" value="slate"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">Slate</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-base" value="gray" class="form-check-input"
+                                        checked />
+                                    <div class="form-check-label">Gray</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-base" value="zinc"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">Zinc</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-base" value="neutral"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">Neutral</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-base" value="stone"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">Stone</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Corner Radius</label>
+                        <p class="form-hint">Choose the border radius factor for your app.</p>
+                        <div>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-radius" value="0"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">0</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-radius" value="0.5"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">0.5</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-radius" value="1"
+                                        class="form-check-input" checked />
+                                    <div class="form-check-label">1</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-radius" value="1.5"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">1.5</div>
+                                </div>
+                            </label>
+                            <label class="form-check">
+                                <div class="form-selectgroup-item">
+                                    <input type="radio" name="theme-radius" value="2"
+                                        class="form-check-input" />
+                                    <div class="form-check-label">2</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-auto space-y">
+                    <button type="button" class="btn w-100" id="reset-changes">
+                        <!-- Download SVG icon from http://tabler.io/icons/icon/rotate -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="icon icon-1">
+                            <path d="M19.95 11a8 8 0 1 0 -.5 4m.5 5v-5h-5" />
+                        </svg>
+                        Reset changes
+                    </button>
+                    <a href="#" class="btn btn-primary w-100" data-bs-dismiss="offcanvas">
+                        <!-- Download SVG icon from http://tabler.io/icons/icon/settings -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="icon icon-1">
+                            <path
+                                d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+                            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                        </svg>
+                        Save settings
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+</body>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</html>
