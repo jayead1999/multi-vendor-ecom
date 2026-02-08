@@ -48,11 +48,19 @@
             </div>
             <form class="card card-md" action="{{ route('admin.register.store') }}" method="post" autocomplete="off"
                 novalidate>
+                @csrf
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Create new Admin account</h2>
                     <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" value="{{ old('username') }}" name="username" required class="form-control" placeholder="Enter username" />
+                        <x-input-error :messages="$errors->get('username')" class="mt-2" />
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Name</label>
-                        <input type="text" class="form-control" placeholder="Enter name" />
+                        <input type="text" value="{{ old('name') }}" name="name" required class="form-control" placeholder="Enter name" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+
                     </div>
 
                     {{-- 
@@ -77,7 +85,7 @@
             --}}
                     <div class="mb-3">
                         <label class="form-label">Email address</label>
-                        <input type="email" name="email" :value="__('Email')" class="form-control"
+                        <input type="email" name="email" value="{{ old('email') }}" autocomplete="username" required class="form-control"
                             placeholder="Enter email" />
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
 
@@ -85,7 +93,7 @@
                     <div class="mb-3">
                         <label class="form-label">Password</label>
                         <div class="input-group input-group-flat">
-                            <input id="password" type="password" :value="__('Password')" name="password"
+                            <input id="password" type="password" name="password"
                                 class="form-control" placeholder="Password" autocomplete="off" />
                             <span class="input-group-text">
                                 <a href="#" class="link-secondary" title="Show password"
@@ -108,7 +116,7 @@
                         <label class="form-label">Confirm Password</label>
                         <div class="input-group input-group-flat">
                             <input id="password_confirmation" type="password" name="password_confirmation"
-                                :value="__('Confirm Password')" class="form-control" placeholder="Confirm Password"
+                                class="form-control" placeholder="Confirm Password"
                                 autocomplete="off" />
                             <span class="input-group-text">
                                 <a href="#" class="link-secondary" title="Show password"
