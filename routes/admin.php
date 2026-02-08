@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
+use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
 use Illuminate\Support\Facades\Route;
 
 //add prefix 'admin' to all admin auth routes
@@ -60,6 +61,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         ->name('admin.logout');
 });
 
-Route::get('/admin/dashboard', function () {
-    return view('admin/dashboard/dashboard');
-})->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
+// Route::get('/admin/dashboard', function () {
+//     return view('admin/dashboard/index');
+// })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
+
+//------Dashboard Route------
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth:admin', 'verified'])->name('admin.dashboard'); 
