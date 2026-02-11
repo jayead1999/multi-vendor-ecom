@@ -1,6 +1,6 @@
 ﻿@extends('frontend.layouts.webLayout')
 @section('title', 'ShopX - Home')
-@section('main')
+@section('content')
     @include('frontend.home.sections.home_slider')
     @include('frontend.home.sections.category_slider')
     @include('frontend.home.sections.banners')
