@@ -1,0 +1,12 @@
+﻿@extends('frontend.layouts.webLayout')
+@section('title', 'ShopX - Home')
+@section('main')
+    @include('frontend.home.sections.home_slider')
+    @include('frontend.home.sections.category_slider')
+    @include('frontend.home.sections.banners')
+    @include('frontend.home.sections.product_tabs')
+    @include('frontend.home.sections.new_arrival')
+    @include('frontend.home.sections.cta')
+    @include('frontend.home.sections.special_products')
+    @include('frontend.home.sections.features_product')
+@endsection
