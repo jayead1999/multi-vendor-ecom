@@ -40,7 +40,7 @@
         <div class="container">
             <div class="header-wrap">
                 <div class="logo logo-width-1">
-                    <a href="index.html"><img src="{{ asset('assets/frontend/imgs/theme/logo.svg') }}" alt="logo" /></a>
+                    <a href="{{ route('home') }}"><img src="{{ asset('assets/frontend/imgs/theme/logo.svg') }}" alt="logo" /></a>
                 </div>
                 <div class="header-right">
                     <div class="search-style-2">
@@ -129,7 +129,7 @@
                                     <img class="svgInject" alt="ShopX"
                                         src="{{ asset('assets/frontend/imgs/theme/icons/icon-user.svg') }}" />
                                 </a>
-                                <a href="#"><span class="lable ml-0">Account</span></a>
+                                <a href="{{ route('login') }}"><span class="lable ml-0">Account</span></a>
                                 <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
                                     <ul>
                                         <li>
@@ -151,9 +151,16 @@
                                         <li>
                                             <a href="#"><i class="fi fi-rs-settings-sliders mr-10"></i>Setting</a>
                                         </li>
+                                        {{-- set here logout post method --}}
                                         <li>
-                                            <a href="#"><i class="fi fi-rs-sign-out mr-10"></i>Sign
-                                                out</a>
+                                            <a href="{{ route('logout') }}"
+                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                <i class="fi fi-rs-sign-out mr-10"></i>Sign out
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                style="display: none;">
+                                                @csrf
+                                            </form>
                                         </li>
                                     </ul>
                                 </div>

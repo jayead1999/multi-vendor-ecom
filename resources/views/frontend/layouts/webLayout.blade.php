@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
-@include('frontend.body.head')
+@include('frontend.layouts.components.head')
 
 <body>
     <!-- Quick view -->
-    @include('frontend.body.quickview')
+    @include('frontend.layouts.components.quickview')
     
     <!-- Header  -->
-    @include('frontend.body.header')
+    @include('frontend.layouts.components.header')
 
    <!-- Mobile Header -->
-   @include('frontend.body.mobile_header')
+   @include('frontend.layouts.components.mobile_header')
 
 
     <main class="main">
@@ -19,7 +19,7 @@
     </main>
 
 
-    @include('frontend.body.footer')
+    @include('frontend.layouts.components.footer')
 
     <!-- Preloader Start -->
     <div id="preloader-active">
@@ -32,7 +32,7 @@
         </div>
     </div>
     <!-- Vendor JS-->
-    @include('frontend.body.script')
+    @include('frontend.layouts.components.script')
 </body>
 
 </html>
