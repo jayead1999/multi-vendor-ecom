@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="wishlist-tab" role="tabpanel"
+<div class="tab-pane fade active show" id="wishlist-tab" role="tabpanel"
                                     aria-labelledby="wishlist-detail-tab">
                                     <div class="card">
                                         <div class="card-header p-0">

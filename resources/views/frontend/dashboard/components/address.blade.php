@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="address" role="tabpanel"
+<div class="tab-pane fade active show" id="address" role="tabpanel"
                                         aria-labelledby="address-tab">
                                         <div class="wsus__shipping_address mb_40">
                                             <h4>Billing Address

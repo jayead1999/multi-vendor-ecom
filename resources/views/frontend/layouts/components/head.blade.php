@@ -16,4 +16,6 @@
 
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/main.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/global/plugin/upload-preview.css') }}" />
+    @stack('css')
 </head>

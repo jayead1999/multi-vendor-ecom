@@ -1,4 +1,4 @@
-  <div class="tab-pane fade" id="track-orders" role="tabpanel"
+  <div class="tab-pane fade active show" id="track-orders" role="tabpanel"
                                     aria-labelledby="track-orders-tab">
                                     <div class="card">
                                         <div class="card-header p-0">

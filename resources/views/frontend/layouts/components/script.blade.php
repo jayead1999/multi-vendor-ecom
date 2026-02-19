@@ -23,6 +23,11 @@
  <script src="{{ asset('assets/frontend/js/plugins/custom-parallax.js') }}"></script>
  <script src="{{ asset('assets/frontend/js/plugins/leaflet.js') }}"></script>
  <script src="{{ asset('assets/frontend/js/plugins/TweenMax.min.js') }}"></script>
+ {{-- image upload preview --}}
+ <script src="{{ asset('assets/global/plugin/jquery.uploadPreview.min.js') }}"></script>
+ <script src="{{ asset('assets/global/plugin/jquery.uploadPreview.js') }}"></script>
+ 
  <!-- Template  JS -->
  <script src="{{ asset('assets/frontend/js/main.js?v=6.0') }}"></script>
  <script src="{{ asset('assets/frontend/js/shop.js?v=6.0') }}"></script>
+@stack('script')
