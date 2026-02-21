@@ -173,7 +173,7 @@
                         <div class="home-slide-cover mt-30">
                             <div class="hero-slider-1 style-5 dot-style-1 dot-style-1-position-2">
                                 <div class="single-hero-slider single-animation-wrap"
-                                    style="background-image: url(assets/imgs/slider/slider-7.png)">
+                                    style="background-image: url(assets/frontend/imgs/slider/slider-7.png)">
                                     <div class="slider-content">
                                         <h1 class="display-2 mb-15">Smartwatch with Heart Rate Monitor</h1>
                                         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
@@ -182,7 +182,7 @@
                                     </div>
                                 </div>
                                 <div class="single-hero-slider single-animation-wrap"
-                                    style="background-image: url(assets/imgs/slider/slider-8.png)">
+                                    style="background-image: url(assets/frontend/imgs/slider/slider-8.png)">
                                     <div class="slider-content">
                                         <h1 class="display-2 mb-15">Wireless Bluetooth EarPods</h1>
                                         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>

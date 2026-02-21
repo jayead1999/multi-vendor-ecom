@@ -11,12 +11,11 @@
                 <div class="row mt-30">
                     <div class="col-md-12">
                         <x-input-image name="profile_picture"
-                            image="{{ auth()->user()->profile_picture ? asset(auth()->user()->profile_picture) : asset('assets/imgs/avatar.png') }}" />
-
-
+                            image="{{ auth()->user()->profile_picture ? asset(auth()->user()->profile_picture) : asset('assets/imgs/avatar.jpeg') }}" />
+                        <x-input-error :messages="$errors->get('profile_picture')" class="mt-2" />
                     </div>
                     <div class="col-md-12">
- 
+
 
                         <div class="input-style mb-20 mt-20">
                             <label>Name <span class="required">*</span></label>

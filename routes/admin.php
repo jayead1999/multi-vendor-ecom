@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
+use App\Http\Controllers\Admin\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 //add prefix 'admin' to all admin auth routes
@@ -38,27 +39,37 @@ Route::prefix('admin')->middleware('guest:admin')->group(function () {
         ->name('admin.password.store');
 });
 
-Route::prefix('admin')->middleware('auth:admin')->group(function () {
+Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
-        ->name('admin.verification.notice');
+        ->name('verification.notice');
 
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
         ->middleware(['signed', 'throttle:6,1'])
-        ->name('admin.verification.verify');
+        ->name('verification.verify');
 
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
         ->middleware('throttle:6,1')
-        ->name('admin.verification.send');
+        ->name('verification.send');
 
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-        ->name('admin.password.confirm');
+        ->name('password.confirm');
 
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store'])->name('store.password.confirm');
 
-    Route::put('password', [PasswordController::class, 'update'])->name('admin.password.update');
+    Route::put('password', [PasswordController::class, 'update'])->name('password.update')->name('update.password');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('admin.logout');
+        ->name('logout');
+
+    // admin Profile 
+    Route::get('profile', [ProfileController::class, 'index'])
+        ->name('profile');
+
+    Route::put('profile', [ProfileController::class, 'updateProfile'])
+        ->name('profile.update');
+
+    Route::put('password', [ProfileController::class, 'updatePassword'])
+        ->name('update.password'); 
 });
 
 // Route::get('/admin/dashboard', function () {
@@ -66,4 +77,4 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
 // })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
 
 //------Dashboard Route------
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth:admin', 'verified'])->name('admin.dashboard'); 
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth:admin', 'verified'])->name('admin.dashboard');

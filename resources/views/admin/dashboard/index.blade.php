@@ -2,7 +2,7 @@
 
 @push('title', 'Admin - Dashboard')
 
-@section('content')
+@section('content') 
     <!-- BEGIN PAGE HEADER -->
     <div class="page-header d-print-none" aria-label="Page header">
       <div class="container-xl">

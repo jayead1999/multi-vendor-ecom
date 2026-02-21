@@ -4,6 +4,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>@stack('title')</title>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link rel="stylesheet" href="{{ asset('assets/global/plugin/upload-preview.css') }}" />
+    
     <link href="{{ asset('assets/admin/css/tabler.css') }}" rel="stylesheet" />
     <!-- END GLOBAL MANDATORY STYLES -->
 

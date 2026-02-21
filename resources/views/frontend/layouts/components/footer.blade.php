@@ -3,7 +3,7 @@
         <div class=" container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="newsletter_bg" style="background:url(assets/imgs/banner/banner-9.png);">
+                    <div class="newsletter_bg" style="background:url({{ asset('assets/frontend/imgs/banner/banner-9.png') }})">
                         <div class="position-relative newsletter-inner">
                             <div class=" newsletter-content">
                                 <h2 class="mb-20">Stay Stylish at Home Shop <br> the Latest Looks Online</h2>
