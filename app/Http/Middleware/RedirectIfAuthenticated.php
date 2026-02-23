@@ -66,7 +66,10 @@ class RedirectIfAuthenticated
             return route('admin.dashboard');
         }
         if ($guard === 'web') {
-            return route('user.dashboard');
+           if (Auth::user()->role == 'vendor') {
+               return route('vendor.dashboard');
+           }
+           return route('user.dashboard');
         }
 
         return '/';

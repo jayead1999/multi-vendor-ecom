@@ -28,6 +28,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if(auth('web')->user()->role == 'vendor'){
+            return redirect()->intended(route('vendor.dashboard', absolute: false));
+        }
         return redirect()->intended(route('user.dashboard', absolute: false));
     }
 
