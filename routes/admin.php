@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Frontend\KycController;
 use Illuminate\Support\Facades\Route;
 
 //add prefix 'admin' to all admin auth routes
@@ -60,6 +61,17 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+});
+
+// Route::get('/admin/dashboard', function () {
+//     return view('admin/dashboard/index');
+// })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
+
+//------Dashboard Route------
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
+
+Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function () {
+
 
     // admin Profile 
     Route::get('profile', [ProfileController::class, 'index'])
@@ -69,12 +81,21 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
         ->name('profile.update');
 
     Route::put('password', [ProfileController::class, 'updatePassword'])
-        ->name('update.password'); 
+        ->name('update.password');
+
+    // kyc request
+    Route::get('kyc/request', [KycController::class, 'kycRequest'])
+        ->name('kyc.request');
+
+    Route::get('kyc/request/approve/{id}', [KycController::class, 'kycRequestApprove'])
+        ->name('kyc.request.approve');
+
+    Route::post('kyc/request/reject/{id}', [KycController::class, 'kycRequestReject'])
+        ->name('kyc.request.reject');
+
+    Route::get('kyc/request/show/{id}', [KycController::class, 'kycRequestShow'])
+        ->name('kyc.request.show');
+
+    Route::delete('kyc/request/delete/{id}', [KycController::class, 'kycRequestDelete'])
+        ->name('kyc.request.delete');
 });
-
-// Route::get('/admin/dashboard', function () {
-//     return view('admin/dashboard/index');
-// })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
-
-//------Dashboard Route------
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
