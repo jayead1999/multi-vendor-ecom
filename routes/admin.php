@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\RoleUserController;
 use App\Http\Controllers\Frontend\KycController;
 use Illuminate\Support\Facades\Route;
 
@@ -117,5 +118,11 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
     // delete a role 
     Route::delete('role/delete/{id}', [RoleController::class, 'destroy'])->name('role.delete');
     
+    // role User
+    Route::resource('role-user', RoleUserController::class)->names('role-user');
+
+
+
+
     Route::get('permission', [RoleController::class, 'permission'])->name('permission');
 });
