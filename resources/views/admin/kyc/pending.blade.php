@@ -1,36 +1,19 @@
 @extends('admin.layouts.app')
 
-@push('title', 'Kyc Request')
+@push('title', 'Pending Kyc Request')
 
 @section('content')
 <div class="page-header">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="page-title">All Kyc Request</h1>
+                <h1 class="page-title">Pending Kyc Request</h1>
             </div>
         </div>
     </div>
 </div>
 <div class="page-body">
-    <div class="container">
-        <div class="col-12 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <form action="{{ route('admin.kyc.request') }}" method="GET" class="d-flex gx-2 align-items-center">
-                        <label class="form-label me-2 mb-0">Filter by Status:</label>
-                        <select name="status" class="form-select w-auto me-2">
-                            <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All Requests</option>
-                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary">Filter</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
+    <div class="container ">
         <div class="col-12">
             <div class="card">
                 <div class="table-responsive">
@@ -116,7 +99,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center">No KYC requests found</td>
+                                <td colspan="6" class="text-center">No pending KYC requests found</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -125,7 +108,7 @@
 
                 @if($kycRequests->hasPages())
                 <div class="card-footer d-flex align-items-center">
-                    {{ $kycRequests->withQueryString()->links('pagination::bootstrap-5') }}
+                    {{ $kycRequests->links('pagination::bootstrap-5') }}
                 </div>
                 @endif
             </div>

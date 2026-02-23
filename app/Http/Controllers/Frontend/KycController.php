@@ -60,6 +60,15 @@ class KycController extends Controller
         return view('admin.kyc.index', compact('kycRequests'));
     }
 
+    // admin kyc pending request
+    public function kycPendingRequest(Request $request)
+    {
+        $query = Kyc::query()->where('status', 'pending');
+
+        $kycRequests = $query->latest()->paginate(15);
+        return view('admin.kyc.pending', compact('kycRequests'));
+    }
+
     // admin kyc request approve
     public function kycRequestApprove($id)
     {

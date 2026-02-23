@@ -850,6 +850,9 @@
                         <a class="dropdown-item" href="{{ route('admin.kyc.request') }}">
                             Kyc request
                         </a>
+                        <a class="dropdown-item" href="{{ route('admin.kyc.pending.request') }}">
+                            Pending request
+                        </a>
                     </div>
                 </li>
 

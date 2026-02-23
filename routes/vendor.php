@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\KycController;
+use App\Http\Controllers\Frontend\StoreController;
 use App\Http\Controllers\VendorUser\VendorDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,8 @@ Route::middleware(['auth', 'role:vendor'])->as('vendor.')->group(function () {
     // Kyc Routes
     Route::get('/kyc', [KycController::class, 'kycIndex'])->name('kyc.index');
     Route::post('/kyc', [KycController::class, 'kycStore'])->name('kyc.store');
+
+    // Store Routes
+    Route::get('/store', [StoreController::class, 'storeIndex'])->name('store.index');
+    Route::post('/store', [StoreController::class, 'storeStore'])->name('store.store');
 });

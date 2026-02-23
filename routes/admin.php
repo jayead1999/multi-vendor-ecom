@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Frontend\KycController;
 use Illuminate\Support\Facades\Route;
 
@@ -87,6 +88,9 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
     Route::get('kyc/request', [KycController::class, 'kycRequest'])
         ->name('kyc.request');
 
+    Route::get('kyc/pending-request', [KycController::class, 'kycPendingRequest'])
+        ->name('kyc.pending.request');
+
     Route::get('kyc/request/approve/{id}', [KycController::class, 'kycRequestApprove'])
         ->name('kyc.request.approve');
 
@@ -98,4 +102,20 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
 
     Route::delete('kyc/request/delete/{id}', [KycController::class, 'kycRequestDelete'])
         ->name('kyc.request.delete');
+
+
+    // Role and Permission 
+    Route::get('role', [RoleController::class, 'role'])->name('role');
+    // create a role 
+    Route::get('role/create', [RoleController::class, 'create'])->name('role.create');
+    // store a role 
+    Route::post('role/store', [RoleController::class, 'store'])->name('role.store');
+    // edit a role 
+    Route::get('role/edit/{id}', [RoleController::class, 'edit'])->name('role.edit');
+    // update a role 
+    Route::put('role/update/{id}', [RoleController::class, 'update'])->name('role.update');
+    // delete a role 
+    Route::delete('role/delete/{id}', [RoleController::class, 'destroy'])->name('role.delete');
+    
+    Route::get('permission', [RoleController::class, 'permission'])->name('permission');
 });
