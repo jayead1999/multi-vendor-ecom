@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoleUserController;
@@ -65,9 +66,6 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
         ->name('logout');
 });
 
-// Route::get('/admin/dashboard', function () {
-//     return view('admin/dashboard/index');
-// })->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
 
 //------Dashboard Route------
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
@@ -105,7 +103,7 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
         ->name('kyc.request.delete');
 
 
-    // Role and Permission 
+    // Role  
     Route::get('role', [RoleController::class, 'role'])->name('role');
     // create a role 
     Route::get('role/create', [RoleController::class, 'create'])->name('role.create');
@@ -121,8 +119,8 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
     // role User
     Route::resource('role-user', RoleUserController::class)->names('role-user');
 
-
-
-
-    Route::get('permission', [RoleController::class, 'permission'])->name('permission');
+    // permission
+    Route::resource('permission', PermissionController::class)->names('permission');
 });
+ 
+

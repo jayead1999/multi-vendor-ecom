@@ -15,8 +15,9 @@ class RoleUserController extends Controller
      */
     public function index()
     {
-        // Don't show the currently logged in admin so they don't lock themselves out or delete themselves easily
-        $users = Admin::where('id', '!=', auth()->guard('admin')->id())->paginate(15);
+        // get all the user include current user 
+        // $users = Admin::where('id', '!=', auth()->guard('admin')->id())->paginate(15);
+        $users = Admin::paginate(20);
         return view('admin.role-user.index', compact('users'));
     }
 
@@ -26,6 +27,7 @@ class RoleUserController extends Controller
     public function create()
     {
         $roles = Role::where('guard_name', 'admin')->get();
+       
         return view('admin.role-user.create', compact('roles'));
     }
 
@@ -41,12 +43,16 @@ class RoleUserController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|exists:roles,name',
         ]);
-
+        if($request->role == 'super_admin'){
+            return redirect()->route('admin.role-user.index')->with('error', 'Super admin User can not be created.');
+        }
+// dd($request->all());
         $admin = Admin::create([
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
         $admin->assignRole($request->role);
@@ -69,6 +75,7 @@ class RoleUserController extends Controller
     {
         $user = Admin::findOrFail($id);
         $roles = Role::where('guard_name', 'admin')->get();
+        
         return view('admin.role-user.edit', compact('user', 'roles'));
     }
 
@@ -84,11 +91,16 @@ class RoleUserController extends Controller
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|exists:roles,name',
         ]);
+        // can 
 
         $admin = Admin::findOrFail($id);
         $admin->name = $request->name;
         $admin->username = $request->username;
         $admin->email = $request->email;
+        if($request->role == 'super_admin'){
+            return redirect()->route('admin.role-user.index')->with('error', 'Super admin User can not be updated.');
+        }
+        $admin->role = $request->role;
 
         if ($request->password) {
             $admin->password = Hash::make($request->password);

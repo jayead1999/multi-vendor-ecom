@@ -42,6 +42,17 @@
             </div>
             @endif
 
+            @if(session('error'))
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <div class="d-flex">
+                    <div>
+                        {{ session('error') }}
+                    </div>
+                </div>
+                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+            </div>
+            @endif
+
             <div class="card">
                 <div class="table-responsive">
                     <table class="table table-vcenter card-table table-striped">

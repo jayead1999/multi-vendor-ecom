@@ -288,7 +288,7 @@
                           <a class="dropdown-item" href="{{ route('admin.role-user.index') }}">
                              Role User
                           </a>
-                          <a class="dropdown-item" href="{{ route('admin.permission') }}">
+                          <a class="dropdown-item" href="{{ route('admin.permission.index') }}">
                               Permission
                           </a> 
                       </div>

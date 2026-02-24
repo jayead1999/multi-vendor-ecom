@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\AlertService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -19,11 +20,6 @@ class RoleController extends Controller
         return view('admin.role.index', compact('roles'));
     }
 
-    public function permission()
-    {
-
-        return view('admin.role.permission', compact('permissions'));
-    }
     /**
      * Show the form for creating a new resource.
      */
@@ -43,7 +39,10 @@ class RoleController extends Controller
             'name' => 'required|string|unique:roles,name',
             'permissions' => 'required|array',
         ]);
-
+  
+        if ($request->name == 'super_admin'){
+         return redirect()->route('admin.role')->with('error', 'Super admin role can not be created.');
+        }
         $role = Role::create([
             'name' => $request->name,
             'guard_name' => 'admin',
@@ -82,8 +81,11 @@ class RoleController extends Controller
             'name' => 'required|string|unique:roles,name,' . $id,
             'permissions' => 'nullable|array',
         ]);
-
         $role = Role::findOrFail($id);
+        // super admin role can not be updated
+        if ($role->name == 'super_admin'){
+         return redirect()->route('admin.role')->with('error', 'Super admin role can not be updated.');
+        }
         $role->update(['name' => $request->name]);
 
         if ($request->has('permissions')) {
@@ -100,13 +102,13 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        // $role = Role::findOrFail($id);
-        // $role->delete();
-        // return redirect()->route('admin.role')->with('success', 'Role deleted successfully.');
-
+        $role = Role::findOrFail($id);
+        if ($role->name == 'super_admin'){
+            return redirect()->route('admin.role')->with('error', 'Super admin role can not be deleted.');
+        }
+    
         try {
             DB::beginTransaction();
-            $role = Role::findOrFail($id);
             $role->users()->detach();
             $role->permissions()->detach();
             $role->delete();

@@ -5,10 +5,21 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Kyc;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 
-class KycController extends Controller
+class KycController extends Controller implements HasMiddleware
+
 {
+
+    static function middleware(): array
+    {
+        return [
+            new Middleware('permission:kyc')
+        ] ;  
+    }
+
     public function kycIndex()
     {
         return view('frontend.pages.kyc');
