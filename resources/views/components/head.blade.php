@@ -5,10 +5,11 @@
     <title>@stack('title')</title>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link rel="stylesheet" href="{{ asset('assets/global/plugin/upload-preview.css') }}" />
-    
+
     <link href="{{ asset('assets/admin/css/tabler.css') }}" rel="stylesheet" />
     <!-- END GLOBAL MANDATORY STYLES -->
-
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@v3.37.1/dist/tabler-icons.min.css" />
     <style>
         @import url("https://rsms.me/inter/inter.css");
     </style>

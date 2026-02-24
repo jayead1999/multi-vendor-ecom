@@ -12,10 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('admins', function (Blueprint $table) {
-              $table->id();
+            $table->id();
             $table->string('username')->unique();
             $table->string('name');
-            $table->string('role')->nullable();
             $table->string('email')->unique();
             $table->string('profile_picture')->default('default/avatar.jpeg')->nullable();
             $table->timestamp('email_verified_at')->nullable();
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
- 
+
     /**
      * Reverse the migrations.
      */

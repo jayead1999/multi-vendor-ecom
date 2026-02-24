@@ -15,9 +15,10 @@ class RoleUserController extends Controller
      */
     public function index()
     {
-        // get all the user include current user 
+        // get all the user include current user
         // $users = Admin::where('id', '!=', auth()->guard('admin')->id())->paginate(15);
         $users = Admin::paginate(20);
+
         return view('admin.role-user.index', compact('users'));
     }
 
@@ -27,7 +28,7 @@ class RoleUserController extends Controller
     public function create()
     {
         $roles = Role::where('guard_name', 'admin')->get();
-       
+
         return view('admin.role-user.create', compact('roles'));
     }
 
@@ -43,10 +44,10 @@ class RoleUserController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|exists:roles,name',
         ]);
-        if($request->role == 'super_admin'){
+        if ($request->role == 'super_admin') {
             return redirect()->route('admin.role-user.index')->with('error', 'Super admin User can not be created.');
         }
-// dd($request->all());
+        // dd($request->all());
         $admin = Admin::create([
             'name' => $request->name,
             'username' => $request->username,
@@ -75,7 +76,7 @@ class RoleUserController extends Controller
     {
         $user = Admin::findOrFail($id);
         $roles = Role::where('guard_name', 'admin')->get();
-        
+
         return view('admin.role-user.edit', compact('user', 'roles'));
     }
 
@@ -86,22 +87,28 @@ class RoleUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'nullable|string|max:255|unique:admins,username,' . $id,
-            'email' => 'required|email|max:255|unique:admins,email,' . $id,
+            'username' => 'nullable|string|max:255|unique:admins,username,'.$id,
+            'email' => 'required|email|max:255|unique:admins,email,'.$id,
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|exists:roles,name',
         ]);
-        // can 
 
         $admin = Admin::findOrFail($id);
+        $currentUser = auth()->guard('admin')->user();
+
+        if ($request->role !== $admin->role) {
+            if ($currentUser->role !== 'super_admin') {
+                return redirect()->back()->with('error', 'You do not have permission to change roles.');
+            }
+            if ($currentUser->id == $admin->id) {
+                return redirect()->back()->with('error', 'Super admin cannot change their own role.');
+            }
+        }
+
         $admin->name = $request->name;
         $admin->username = $request->username;
         $admin->email = $request->email;
-        if($request->role == 'super_admin'){
-            return redirect()->route('admin.role-user.index')->with('error', 'Super admin User can not be updated.');
-        }
         $admin->role = $request->role;
-
         if ($request->password) {
             $admin->password = Hash::make($request->password);
         }
@@ -118,6 +125,16 @@ class RoleUserController extends Controller
     public function destroy(string $id)
     {
         $admin = Admin::findOrFail($id);
+        $currentUser = auth()->guard('admin')->user();
+
+        if ($currentUser->role !== 'super_admin') {
+            return redirect()->back()->with('error', 'You do not have permission to delete users.');
+        }
+
+        if ($currentUser->id == $admin->id) {
+            return redirect()->back()->with('error', 'Super admin cannot delete themselves.');
+        }
+
         $admin->delete();
 
         return redirect()->route('admin.role-user.index')->with('success', 'Admin user deleted successfully.');

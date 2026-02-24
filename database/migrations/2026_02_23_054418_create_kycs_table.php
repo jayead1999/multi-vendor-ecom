@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->text('full_address')->nullable();
-            $table->enum('document_type', ['passport','driving_license', 'national_id', 'other'])->nullable();
+            $table->enum('document_type', ['passport', 'driving_license', 'national_id', 'other'])->nullable();
             $table->string('document_scan_copy')->nullable();
             $table->timestamps();
         });

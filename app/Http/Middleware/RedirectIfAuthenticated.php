@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 class RedirectIfAuthenticated
@@ -26,7 +25,7 @@ class RedirectIfAuthenticated
      */
     public static function using($guard, ...$others)
     {
-        return static::class . ':' . implode(',', [$guard, ...$others]);
+        return static::class.':'.implode(',', [$guard, ...$others]);
     }
 
     /**
@@ -66,10 +65,11 @@ class RedirectIfAuthenticated
             return route('admin.dashboard');
         }
         if ($guard === 'web') {
-           if (Auth::user()->role == 'vendor') {
-               return route('vendor.dashboard');
-           }
-           return route('user.dashboard');
+            if (Auth::user()->role == 'vendor') {
+                return route('vendor.dashboard');
+            }
+
+            return route('user.dashboard');
         }
 
         return '/';
@@ -78,7 +78,6 @@ class RedirectIfAuthenticated
     /**
      * Specify the callback that should be used to generate the redirect path.
      *
-     * @param  callable  $redirectToCallback
      * @return void
      */
     public static function redirectUsing(callable $redirectToCallback)

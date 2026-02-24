@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Store;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class StoreController extends Controller
 {
     public function storeIndex()
     {
         $store = Store::where('seller_id', auth()->user()->id)->first();
+
         return view('vendor_user.store.index', compact('store'));
     }
 
@@ -55,6 +55,7 @@ class StoreController extends Controller
                 'long_description' => $request->long_description,
             ]
         );
+
         return redirect()->route('vendor.store.index')->with('success', 'Store configuration completed successfully!');
     }
 }

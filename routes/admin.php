@@ -15,9 +15,10 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoleUserController;
 use App\Http\Controllers\Frontend\KycController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
-//add prefix 'admin' to all admin auth routes
+// add prefix 'admin' to all admin auth routes
 Route::prefix('admin')->middleware('guest:admin')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('admin.register');
@@ -66,14 +67,12 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
         ->name('logout');
 });
 
-
-//------Dashboard Route------
+// ------Dashboard Route------
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
 
 Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function () {
 
-
-    // admin Profile 
+    // admin Profile
     Route::get('profile', [ProfileController::class, 'index'])
         ->name('profile');
 
@@ -102,25 +101,31 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
     Route::delete('kyc/request/delete/{id}', [KycController::class, 'kycRequestDelete'])
         ->name('kyc.request.delete');
 
-
-    // Role  
+    // Role
     Route::get('role', [RoleController::class, 'role'])->name('role');
-    // create a role 
+    // create a role
     Route::get('role/create', [RoleController::class, 'create'])->name('role.create');
-    // store a role 
+    // store a role
     Route::post('role/store', [RoleController::class, 'store'])->name('role.store');
-    // edit a role 
+    // edit a role
     Route::get('role/edit/{id}', [RoleController::class, 'edit'])->name('role.edit');
-    // update a role 
+    // update a role
     Route::put('role/update/{id}', [RoleController::class, 'update'])->name('role.update');
-    // delete a role 
+    // delete a role
     Route::delete('role/delete/{id}', [RoleController::class, 'destroy'])->name('role.delete');
-    
+
     // role User
     Route::resource('role-user', RoleUserController::class)->names('role-user');
 
     // permission
     Route::resource('permission', PermissionController::class)->names('permission');
-});
- 
 
+
+
+    // Settings
+    Route::get('settings', [SettingController::class, 'index'])->name('settings');
+    Route::get('settings/general', [SettingController::class, 'generalSetting'])->name('settings.general');
+    Route::put('settings/general-update', [SettingController::class, 'updateGeneralSettings'])->name('settings.general.update');
+    Route::put('settings/update', [SettingController::class, 'updateSettings'])->name('settings.update');
+    Route::put('settings/update-password', [SettingController::class, 'updatePassword'])->name('settings.update-password');
+});

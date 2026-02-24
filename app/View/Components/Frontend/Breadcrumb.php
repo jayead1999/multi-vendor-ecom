@@ -11,7 +11,6 @@ class Breadcrumb extends Component
     /**
      * Create a new component instance.
      */
-
     public array $items;
 
     public function __construct(array $items = [])

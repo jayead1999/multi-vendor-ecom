@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Helpers;
+
 use Spatie\Permission\Models\Role;
 
 // if (!function_exists('getRoleName')) {
@@ -9,8 +11,9 @@ use Spatie\Permission\Models\Role;
 //     }
 // }
 
-if (!function_exists('hasPermission')){
-    function hasPermission(array $permissions):bool{
-        return auth('admin')->user()->hasAnyPermission($permissions); 
+if (! function_exists('hasPermission')) {
+    function hasPermission(array $permissions): bool
+    {
+        return auth('admin')->user()->hasAnyPermission($permissions);
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller
 {
     use FileUploadTraits;
+
     public function index()
     {
         return view('admin/profile/index');
@@ -20,8 +21,8 @@ class ProfileController extends Controller
         // dd($request->all());
 
         $request->validate([
-            'name'            => 'required|string|max:255',
-            'email'           => 'required|email|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -32,14 +33,14 @@ class ProfileController extends Controller
         if ($request->hasFile('profile_picture')) {
             \Log::info('Profile picture found in request.');
             $filePath = $this->fileUpload($request->file('profile_picture'), $user->profile_picture);
-            \Log::info('File upload result: ' . $filePath);
+            \Log::info('File upload result: '.$filePath);
         } else {
             \Log::info('No profile picture in request.');
         }
 
         $user->update([
-            'name'            => $request->name,
-            'email'           => $request->email,
+            'name' => $request->name,
+            'email' => $request->email,
             'profile_picture' => $filePath,
         ]);
 
@@ -63,5 +64,4 @@ class ProfileController extends Controller
 
         return back()->with('status', 'Password updated successfully');
     }
-   
 }

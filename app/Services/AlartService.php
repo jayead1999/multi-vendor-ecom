@@ -1,15 +1,16 @@
 <?php
+
 namespace App\Services;
 
 class AlertService
 {
-    public static function success($message )
+    public static function success($message)
     {
         session()->flash('success', $message);
     }
 
-    public static function error($message )
-    { 
+    public static function error($message)
+    {
         session()->flash('error', $message);
     }
 
@@ -23,20 +24,19 @@ class AlertService
         session()->flash('info', $message);
     }
 
+    // delete , create , update ,
 
-    // delete , create , update , 
-
-    public static function delete($message )
+    public static function delete($message)
     {
         session()->flash('success', $message);
     }
 
-    public static function create($message )
+    public static function create($message)
     {
         session()->flash('success', $message);
     }
 
-    public static function update($message )
+    public static function update($message)
     {
         session()->flash('success', $message);
     }

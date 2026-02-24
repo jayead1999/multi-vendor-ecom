@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\AlertService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -17,6 +16,7 @@ class RoleController extends Controller
     public function role()
     {
         $roles = Role::where('guard_name', 'admin')->paginate(15);
+
         return view('admin.role.index', compact('roles'));
     }
 
@@ -26,6 +26,7 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = Permission::all()->groupBy('group_name');
+
         // dd($permissions);
         return view('admin.role.create', compact('permissions'));
     }
@@ -39,9 +40,9 @@ class RoleController extends Controller
             'name' => 'required|string|unique:roles,name',
             'permissions' => 'required|array',
         ]);
-  
-        if ($request->name == 'super_admin'){
-         return redirect()->route('admin.role')->with('error', 'Super admin role can not be created.');
+
+        if ($request->name == 'super_admin') {
+            return redirect()->route('admin.role')->with('error', 'Super admin role can not be created.');
         }
         $role = Role::create([
             'name' => $request->name,
@@ -69,6 +70,7 @@ class RoleController extends Controller
         $role = Role::findOrFail($id);
         $permissions = Permission::all()->groupBy('group_name');
         $rolePermissions = $role->permissions->pluck('name')->toArray();
+
         return view('admin.role.edit', compact('role', 'permissions', 'rolePermissions'));
     }
 
@@ -78,13 +80,13 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string|unique:roles,name,' . $id,
+            'name' => 'required|string|unique:roles,name,'.$id,
             'permissions' => 'nullable|array',
         ]);
         $role = Role::findOrFail($id);
         // super admin role can not be updated
-        if ($role->name == 'super_admin'){
-         return redirect()->route('admin.role')->with('error', 'Super admin role can not be updated.');
+        if ($role->name == 'super_admin') {
+            return redirect()->route('admin.role')->with('error', 'Super admin role can not be updated.');
         }
         $role->update(['name' => $request->name]);
 
@@ -103,19 +105,21 @@ class RoleController extends Controller
     public function destroy(string $id)
     {
         $role = Role::findOrFail($id);
-        if ($role->name == 'super_admin'){
+        if ($role->name == 'super_admin') {
             return redirect()->route('admin.role')->with('error', 'Super admin role can not be deleted.');
         }
-    
+
         try {
             DB::beginTransaction();
             $role->users()->detach();
             $role->permissions()->detach();
             $role->delete();
             DB::commit();
+
             return redirect()->route('admin.role')->with('success', 'Role deleted successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
+
             return redirect()->route('admin.role')->with('error', 'Role deletion failed.');
         }
     }

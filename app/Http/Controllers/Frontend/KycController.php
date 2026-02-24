@@ -10,14 +10,12 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 
 class KycController extends Controller implements HasMiddleware
-
 {
-
-    static function middleware(): array
+    public static function middleware(): array
     {
         return [
-            new Middleware('permission:kyc')
-        ] ;  
+            new Middleware('permission:kyc'),
+        ];
     }
 
     public function kycIndex()
@@ -44,7 +42,7 @@ class KycController extends Controller implements HasMiddleware
             $imagePath = $request->file('document_scan_copy')->store('kyc_documents', 'public');
         }
 
-        $kyc = new Kyc();
+        $kyc = new Kyc;
         $kyc->user_id = Auth::id();
         $kyc->full_name = $request->full_name;
         $kyc->date_of_birth = $request->date_of_birth;
@@ -57,7 +55,6 @@ class KycController extends Controller implements HasMiddleware
         return redirect()->route('vendor.dashboard')->with('success', 'KYC submitted successfully');
     }
 
-
     // admin kyc request
     public function kycRequest(Request $request)
     {
@@ -68,6 +65,7 @@ class KycController extends Controller implements HasMiddleware
         }
 
         $kycRequests = $query->latest()->paginate(15);
+
         return view('admin.kyc.index', compact('kycRequests'));
     }
 
@@ -77,6 +75,7 @@ class KycController extends Controller implements HasMiddleware
         $query = Kyc::query()->where('status', 'pending');
 
         $kycRequests = $query->latest()->paginate(15);
+
         return view('admin.kyc.pending', compact('kycRequests'));
     }
 
@@ -87,6 +86,7 @@ class KycController extends Controller implements HasMiddleware
         $kycRequest->status = 'approved';
         $kycRequest->verified_at = now();
         $kycRequest->save();
+
         return redirect()->route('admin.kyc.request')->with('success', 'KYC request approved successfully');
     }
 
@@ -94,13 +94,14 @@ class KycController extends Controller implements HasMiddleware
     public function kycRequestReject(Request $request, $id)
     {
         $request->validate([
-            'rejected_reason' => 'required|string|max:1000'
+            'rejected_reason' => 'required|string|max:1000',
         ]);
 
         $kycRequest = Kyc::find($id);
         $kycRequest->status = 'rejected';
         $kycRequest->rejected_reason = $request->rejected_reason;
         $kycRequest->save();
+
         return redirect()->route('admin.kyc.request')->with('success', 'KYC request rejected successfully');
     }
 
@@ -108,6 +109,7 @@ class KycController extends Controller implements HasMiddleware
     public function kycRequestShow($id)
     {
         $kycRequest = Kyc::findOrFail($id);
+
         return view('admin.kyc.show', compact('kycRequest'));
     }
 
@@ -116,6 +118,7 @@ class KycController extends Controller implements HasMiddleware
     {
         $kycRequest = Kyc::findOrFail($id);
         $kycRequest->delete();
+
         return redirect()->route('admin.kyc.request')->with('success', 'KYC request deleted successfully');
     }
 }

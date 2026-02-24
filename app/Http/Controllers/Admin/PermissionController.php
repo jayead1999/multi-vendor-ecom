@@ -13,8 +13,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-         $permissions = Permission::all();
-         return view('admin.permission.index', compact('permissions'));
+        $permissions = Permission::all();
+
+        return view('admin.permission.index', compact('permissions'));
     }
 
     /**
@@ -38,7 +39,7 @@ class PermissionController extends Controller
         Permission::create([
             'name' => $request->name,
             'guard_name' => 'admin',
-            'group_name' => $request->group_name
+            'group_name' => $request->group_name,
         ]);
 
         return redirect()->route('admin.permission.index')->with('success', 'Permission created successfully.');
@@ -58,6 +59,7 @@ class PermissionController extends Controller
     public function edit(string $id)
     {
         $permission = Permission::findOrFail($id);
+
         return view('admin.permission.edit', compact('permission'));
     }
 
@@ -75,7 +77,7 @@ class PermissionController extends Controller
 
         $permission->update([
             'name' => $request->name,
-            'group_name' => $request->group_name
+            'group_name' => $request->group_name,
         ]);
 
         return redirect()->route('admin.permission.index')->with('success', 'Permission updated successfully.');

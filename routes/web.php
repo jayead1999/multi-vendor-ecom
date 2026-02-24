@@ -12,11 +12,10 @@ use Illuminate\Support\Facades\Route;
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-//Home or Index Route
+// Home or Index Route
 Route::controller(FrontendController::class)->group(function () {
     Route::get('/', 'index')->name('home');
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
