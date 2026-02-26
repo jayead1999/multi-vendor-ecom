@@ -14,7 +14,7 @@
           </div>
           <!-- END NAVBAR LOGO -->
           <div class="navbar-nav flex-row d-lg-none">
-             
+
               <div class="d-none d-lg-flex">
                   <div class="nav-item">
                       <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode"
@@ -189,16 +189,20 @@
                       <div class="d-none d-xl-block ps-2">
                           <div>{{ auth('admin')->user()->name }}</div>
                           <div class="mt-1 small text-secondary text-capitalize">
-                              {{ str_replace('_', ' ', auth('admin')->user()->role) }}</div>
+                              {{ str_replace('_', ' ', auth('admin')->user()->role) }}
+                          </div>
                       </div>
                   </a>
                   <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                       <a href="#" class="dropdown-item">Status</a>
-                      <a href={{ route('admin.profile') }} class="dropdown-item">PProfile</a>
+                      <a href={{ route('admin.profile') }} class="dropdown-item">Admin Profile</a>
                       <a href="#" class="dropdown-item">Feedback</a>
                       <div class="dropdown-divider"></div>
-                      <a href="./settings.html" class="dropdown-item">Settings</a>
-                      <a href="./sign-in.html" class="dropdown-item">Logout</a>
+                      <a href="{{ route('admin.settings') }}" class="dropdown-item">Settings</a>
+                      <form action="{{ route('admin.logout') }}" method="POST">
+                          @csrf
+                          <button type="submit" class="dropdown-item">Logout</button>
+                      </form>
                   </div>
               </div>
           </div>
@@ -209,11 +213,42 @@
                       <a class="nav-link" href="./">
                           <span
                               class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/home -->
-                            <i class="ti ti-home"></i>
-                            </span>
+                              <i class="ti ti-home"></i>
+                          </span>
                           <span class="nav-link-title"> Home </span>
                       </a>
-                  </li> 
+                  </li>
+
+                  <!-- Product Management section -->
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                          data-bs-auto-close="false" role="button" aria-expanded="false">
+                          <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <i class="ti ti-building-store"></i>
+                          </span>
+                          <span class="nav-link-title"> Product Management </span>
+                      </a>
+                      <div class="dropdown-menu">
+                          <a class="dropdown-item" href="{{ route('admin.brand.index') }}">
+                              Brands
+                          </a>
+
+                          <a class="dropdown-item" href="{{ route('admin.category.index') }}">
+                              Categories
+                          </a>
+                          <a class="dropdown-item" href="{{ route('admin.sub-category.index') }}">
+                              Sub Categories
+                          </a>
+
+                          <a class="dropdown-item" href="{{ route('admin.tags.index') }}">
+                              Tags
+                          </a>
+                          <a class="dropdown-item" href="#">
+                              Products
+                          </a>
+
+                      </div>
+                  </li>
                   <!-- kyc Section -->
                   <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
@@ -238,7 +273,7 @@
                       <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                           data-bs-auto-close="false" role="button" aria-expanded="false">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
-                             
+
                               <i class="ti ti-access-point"></i>
                           </span>
                           <span class="nav-link-title"> Access Management </span>
@@ -271,6 +306,8 @@
                           </a>
                       </div>
                   </li>
+
+
 
               </ul>
               <!-- END NAVBAR MENU -->
