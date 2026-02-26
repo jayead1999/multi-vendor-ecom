@@ -163,4 +163,13 @@ Route::prefix('admin')->as('admin.')->middleware('auth:admin')->group(function (
     Route::get('brand/edit/{brand}', [App\Http\Controllers\Admin\BrandController::class, 'edit'])->name('brand.edit');
     Route::put('brand/update/{brand}', [App\Http\Controllers\Admin\BrandController::class, 'update'])->name('brand.update');
     Route::delete('brand/delete/{brand}', [App\Http\Controllers\Admin\BrandController::class, 'destroy'])->name('brand.destroy');
+
+    // Product
+    Route::get('product', [App\Http\Controllers\Admin\ProductController::class, 'index'])->name('product.index');
+    Route::get('product/create', [App\Http\Controllers\Admin\ProductController::class, 'create'])->name('product.create');
+    Route::post('product/store', [App\Http\Controllers\Admin\ProductController::class, 'store'])->name('product.store');
+    Route::get('product/edit/{product}', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('product.edit');
+    Route::put('product/update/{product}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('product.update');
+    Route::delete('product/delete/{product}', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('product.destroy');
+    Route::get('product/get-subcategories/{category_id}', [App\Http\Controllers\Admin\ProductController::class, 'getSubcategories'])->name('product.get-subcategories');
 });

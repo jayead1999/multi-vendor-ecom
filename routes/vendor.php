@@ -10,7 +10,7 @@ Route::middleware(['auth', 'user_role:vendor'])->prefix('vendor')->as('vendor.')
     Route::get('/profile', [VendorDashboardController::class, 'profile'])->name('profile');
 });
 
-Route::middleware(['auth', 'role:vendor'])->as('vendor.')->group(function () {
+Route::middleware(['auth'])->as('vendor.')->group(function () {
     // Route::as('vendor.')->group(function () {
 
     // Kyc Routes
